@@ -1,122 +1,101 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useState } from "react";
+import axios from "axios";
+import "./index.css";
+
+const API = "https://37a2-103-181-255-55.ngrok-free.app/";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [data, setData] = useState({});
+
+  const loadData = () => {
+    axios
+      .get(`${API}/api/status`)
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    loadData();
+    const interval = setInterval(loadData, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const control = (speed) => {
+    axios.post(`${API}/api/control`, {
+      command: "fan_control",
+      value: speed,
+    });
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
+    <div className="app">
+      <header>
         <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
+          <h1>HMI CONTROL SYSTEM</h1>
+          <p>Masjid Bahrul Ulum - YOLOv8 Smart Mosque</p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
+        <nav>
+          Dashboard Monitoring Analytics
+        </nav>
+      </header>
+
+      <section className="hero">
+        <h2>SYSTEM DASHBOARD</h2>
+        <p>Real-time Monitoring & Control Panel</p>
       </section>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      <div className="container">
+        <div className="card">
+          <h3>ZONE DISTRIBUTION</h3>
+          <div className="value">{data.human_count ?? 0}</div>
+          <p>Detected Human</p>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <div className="card">
+          <h3>SENSOR DATA</h3>
+          <div className="sensor">
+            <div>
+              Light
+              <br />
+              --
+            </div>
+            <div>
+              Temperature
+              <br />
+              --
+            </div>
+            <div>
+              Humidity
+              <br />
+              --
+            </div>
+            <div>
+              Fan Speed
+              <br />
+              {data.fan_speed ?? 0}
+            </div>
+          </div>
+        </div>
+
+        <div className="card">
+          <h3>LIVE PREVIEW</h3>
+          <img src={`${API}/video_feed`} className="camera" alt="Live feed" />
+        </div>
+      </div>
+
+      <div className="control">
+        <h2>FAN CONTROL</h2>
+        <button onClick={() => control(0)}>OFF</button>
+        <button onClick={() => control(1)}>SPEED 1</button>
+        <button onClick={() => control(2)}>SPEED 2</button>
+        <button onClick={() => control(3)}>SPEED 3</button>
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
