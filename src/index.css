@@ -1,14 +1,10 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   background: #fffbea;
 }
 
-.app {
-  width: 100%;
-}
-
-header {
+.header {
   background: #ffd900;
   padding: 25px;
   display: flex;
@@ -16,38 +12,68 @@ header {
   align-items: center;
 }
 
-header h1 {
+.header h1 {
   margin: 0;
-  color: #333;
+  font-size: 28px;
 }
 
-nav {
+.header p {
+  margin-top: 8px;
+}
+
+nav span {
+  margin-left: 45px;
   font-weight: bold;
-  word-spacing: 25px;
 }
 
-.hero {
+.title {
   background: #ffe52b;
   padding: 30px;
+  position: relative;
 }
 
-.container {
+.title h2 {
+  font-size: 32px;
+  margin: 0;
+}
+
+.top-btn {
+  position: absolute;
+  right: 30px;
+  top: 20px;
+}
+
+.top-btn button {
+  padding: 12px 25px;
+  margin: 5px;
+  border-radius: 8px;
+  background: #ffd900;
+  border: 1px solid #e5b900;
+}
+
+.grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 15px;
   padding: 20px;
 }
 
 .card {
   background: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
   padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
 }
 
-.value {
+.zone-box {
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zone-box div {
   font-size: 70px;
-  text-align: center;
   color: #ffd000;
 }
 
@@ -58,8 +84,8 @@ nav {
 }
 
 .sensor div {
-  background: #f7f7f7;
-  padding: 20px;
+  background: #f4f4f4;
+  padding: 25px;
   text-align: center;
 }
 
@@ -68,20 +94,25 @@ nav {
   border-radius: 10px;
 }
 
-.control {
+.fan {
   background: white;
   padding: 20px;
 }
 
-button {
-  padding: 15px 30px;
+.fan button {
+  padding: 15px 35px;
   margin: 10px;
   background: #ffd000;
   border: none;
   font-weight: bold;
-  cursor: pointer;
 }
 
 button:hover {
-  background: #ffae00;
+  background: #ffb900;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
