@@ -1,57 +1,65 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import "./index.css";
-
-const API = "https://37a2-103-181-255-55.ngrok-free.app/";
+import "./App.css";
+import api from "./api";
 
 function App() {
-  const [data, setData] = useState({});
+  const [status, setStatus] = useState({});
+  const [backendURL, setBackendURL] = useState("");
 
-  const loadData = () => {
-    axios
-      .get(`${API}/api/status`)
-      .then((res) => {
-        setData(res.data);
+  // Ambil URL backend dari axios
+  useEffect(() => {
+    setBackendURL(api.defaults.baseURL);
+  }, []);
+
+  // Polling status setiap 1 detik
+  useEffect(() => {
+    const load = () => {
+      api
+        .get("/api/status")
+        .then((res) => {
+          setStatus(res.data);
+        })
+        .catch((err) => {
+          console.error("Status fetch error:", err);
+        });
+    };
+
+    load();
+    const timer = setInterval(load, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const controlFan = (speed) => {
+    api
+      .post("/api/control", {
+        command: "fan_control",
+        value: speed,
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Control error:", err);
       });
   };
 
-  useEffect(() => {
-    loadData();
-    const interval = setInterval(loadData, 2000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const control = (speed) => {
-    axios.post(`${API}/api/control`, {
-      command: "fan_control",
-      value: speed,
-    });
-  };
-
   return (
-    <div className="app">
+    <div>
       <header>
         <div>
           <h1>HMI CONTROL SYSTEM</h1>
-          <p>Masjid Bahrul Ulum - YOLOv8 Smart Mosque</p>
+          <p>Masjid Bahrul Ulum - Single Camera YOLOv8 Implementation</p>
         </div>
-        <nav>
-          Dashboard Monitoring Analytics
-        </nav>
+        <nav>DASHBOARD &nbsp;&nbsp; MONITORING &nbsp;&nbsp; ANALYTICS</nav>
       </header>
 
-      <section className="hero">
+      <section className="title">
         <h2>SYSTEM DASHBOARD</h2>
-        <p>Real-time Monitoring & Control Panel</p>
+        <p>Real-time Monitoring & Control Panel - Single Camera System</p>
       </section>
 
-      <div className="container">
+      <div className="grid">
         <div className="card">
           <h3>ZONE DISTRIBUTION</h3>
-          <div className="value">{data.human_count ?? 0}</div>
+          <h1>{status.human_count || 0}</h1>
           <p>Detected Human</p>
         </div>
 
@@ -59,40 +67,43 @@ function App() {
           <h3>SENSOR DATA</h3>
           <div className="sensor">
             <div>
-              Light
-              <br />
-              --
+              Light Intensity
+              <br />--
             </div>
             <div>
               Temperature
-              <br />
-              --
+              <br />--
             </div>
             <div>
               Humidity
-              <br />
-              --
+              <br />--
             </div>
             <div>
               Fan Speed
               <br />
-              {data.fan_speed ?? 0}
+              {status.fan_speed || 0}
             </div>
           </div>
         </div>
 
         <div className="card">
           <h3>LIVE PREVIEW</h3>
-          <img src={`${API}/video_feed`} className="camera" alt="Live feed" />
+          {backendURL && (
+            <img
+              src={`${backendURL}/video_feed`}
+              width="100%"
+              alt="Live CCTV"
+            />
+          )}
         </div>
       </div>
 
       <div className="control">
         <h2>FAN CONTROL</h2>
-        <button onClick={() => control(0)}>OFF</button>
-        <button onClick={() => control(1)}>SPEED 1</button>
-        <button onClick={() => control(2)}>SPEED 2</button>
-        <button onClick={() => control(3)}>SPEED 3</button>
+        <button onClick={() => controlFan(0)}>OFF</button>
+        <button onClick={() => controlFan(1)}>SPEED 1</button>
+        <button onClick={() => controlFan(2)}>SPEED 2</button>
+        <button onClick={() => controlFan(3)}>SPEED 3</button>
       </div>
     </div>
   );

@@ -1,94 +1,76 @@
-.dashboard {
-    min-height: 100vh;
-    background: #fff9d8;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fffbea;
 }
 
-/* ===== HEADER ===== */
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 25px;
-    background: #ffd900;
+  background: #ffd900;
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 header h1 {
-    margin: 0;
-    font-size: 28px;
+  margin: 0;
 }
 
-header p {
-    margin-top: 8px;
-}
-
-/* ===== NAVIGATION ===== */
 nav {
-    padding: 20px;
-    font-weight: bold;
-    word-spacing: 40px;
-    background: #ffd900;
+  font-weight: bold;
 }
 
-/* ===== TITLE ===== */
 .title {
-    padding: 30px;
-    background: #ffe52c;
+  background: #ffe52b;
+  padding: 30px;
 }
 
-.title h2 {
-    margin: 0;
-    font-size: 32px;
-}
-
-/* ===== GRID ===== */
 .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 30px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
 }
 
-/* ===== CARD ===== */
 .card {
-    padding: 25px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-}
-
-.card h3 {
-    margin-top: 0;
-    font-size: 20px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
 }
 
 .card h1 {
-    font-size: 50px;
-    text-align: center;
+  font-size: 60px;
+  text-align: center;
+  color: #ffd000;
 }
 
-.card img {
-    margin-top: 15px;
-    border-radius: 10px;
+.sensor {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
 }
 
-/* ===== BUTTON ===== */
+.sensor div {
+  background: #f5f5f5;
+  padding: 25px;
+  text-align: center;
+}
+
+.control {
+  padding: 20px;
+  background: white;
+}
+
 button {
-    margin: 5px;
-    padding: 12px 18px;
-    border: none;
-    border-radius: 8px;
-    background: #ffd900;
-    font-weight: bold;
-    cursor: pointer;
+  padding: 15px 30px;
+  margin: 10px;
+  background: #ffd000;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 button:hover {
-    background: #ffcc00;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 900px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
+  background: #ffae00;
 }
